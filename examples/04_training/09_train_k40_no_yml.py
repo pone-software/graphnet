@@ -94,6 +94,8 @@ background = ParquetDataset(
     graph_definition = graph_definition,
 )
 
+# MANY DEBUG STATEMENTS BELOW!
+
 # Inspect the input Parquet files and subdirectories
 def inspect_parquet_files(path):
     print(f"Inspecting Parquet files and subdirectories in: {path}")
@@ -138,23 +140,47 @@ print("Subsampled_background: ", len(subsampled_bkg))
 
 subsampled_signal, _ = random_split(signal, [10, len(signal) - 10], generator=generator1)
 print("Signal_Subsampled: ", len(subsampled_signal))
-
 # create the total dataset from now equally sized bkg and signal datasets
-ensemble_dataset = EnsembleDataset([subsampled_signal, subsampled_bkg]) # change: subsampled_signal to signal
-
+print("Creating EnsembleDataset...")
+ensemble_dataset = EnsembleDataset([subsampled_signal, subsampled_bkg])  # change: subsampled_signal to signal
+print(f"EnsembleDataset created. Length: {len(ensemble_dataset)}")
 
 # and now we can do the split in train, val, test
-train_set, val_set, test_set  = random_split(ensemble_dataset, [0.8, 0.1, 0.1], generator=generator1)
+dataset_length = len(ensemble_dataset)
+print(f"Total dataset length: {dataset_length}")
 
-for i in range(6):
-    print(train_set[i])  # Check if the dataset returns valid samples
+train_size = int(0.8 * dataset_length)
+val_size = int(0.1 * dataset_length)
+test_size = dataset_length - train_size - val_size  # Ensure all samples are used
+print(f"Train size: {train_size}, Validation size: {val_size}, Test size: {test_size}")
 
+print("Splitting dataset into train, validation, and test sets...")
+train_set, val_set, test_set = random_split(
+    ensemble_dataset, [train_size, val_size, test_size], generator=generator1
+)
+print(f"Train set length: {len(train_set)}, Validation set length: {len(val_set)}, Test set length: {len(test_set)}")
 
+# Debugging DataLoader arguments
+print("Creating DataLoader for train set...")
 train_dataloader = DataLoader(train_set, batch_size=1, num_workers=1)
-validate_dataloader = DataLoader(val_set, batch_size=1, num_workers=1)
-test_dataloader = DataLoader(test_set, batch_size=1, num_workers=1)
+print(f"Train DataLoader created with batch_size=1 and num_workers=1. Length: {len(train_dataloader)}")
 
-# Configuring the components
+print("Creating DataLoader for validation set...")
+validate_dataloader = DataLoader(val_set, batch_size=1, num_workers=1)
+print(f"Validation DataLoader created with batch_size=1 and num_workers=1. Length: {len(validate_dataloader)}")
+
+print("Creating DataLoader for test set...")
+test_dataloader = DataLoader(test_set, batch_size=1, num_workers=1)
+print(f"Test DataLoader created with batch_size=1 and num_workers=1. Length: {len(test_dataloader)}")
+
+# Debugging iteration through train_dataloader
+print("Iterating through train_dataloader...")
+for i, batch in enumerate(train_dataloader):
+    print(f"Processing batch {i + 1}/{len(train_dataloader)}...")
+    print(f"Batch details: {batch}")
+    # Add any specific processing logic here
+print("Finished iterating through train_dataloader.")
+
 
 # Represents the data as a point-cloud graph where each
 # node represents a pulse of Cherenkov radiation
@@ -190,11 +216,6 @@ wandb_run = wandb.init(
 
 # Add the WandbMetricsLogger callback
 wandb_logger_callback = WandbMetricsLogger()
-
-for i in range(6):
-    print(train_set[i])  # Check if the dataset returns valid samples
-    print(train_set[i].keys())  # Check the keys of the dataset
-    print(train_set[i].x)  # Check the features of the dataset
 
 # This is where you break!
 batch = next(iter(train_dataloader))

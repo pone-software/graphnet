@@ -283,7 +283,11 @@ class Dataset(
         """
         # Base class constructor
         super().__init__(name=__name__, class_name=self.__class__.__name__)
-
+        print(f"Initializing Dataset with path: {path}")
+        print(f"Graph definition: {graph_definition}")
+        print(f"Features: {features}, Truth: {truth}")
+        print(f"Selection: {selection}, Seed: {seed}")
+    # Existing initialization logic
         # Check(s)
         if isinstance(pulsemaps, str):
             pulsemaps = [pulsemaps]
@@ -453,10 +457,12 @@ class Dataset(
 
     def __len__(self) -> int:
         """Return number of graphs in `Dataset`."""
+        print(f"Dataset __len__ called: {len(self._indices)}")
         return len(self._indices)
 
     def __getitem__(self, sequential_index: int) -> Data:
         """Return graph `Data` object at `index`."""
+        print(f"Dataset __getitem__ called: {sequential_index}")
         if not (0 <= sequential_index < len(self)):
             raise IndexError(
                 f"Index {sequential_index} not in range [0, {len(self) - 1}]"
@@ -464,7 +470,10 @@ class Dataset(
         features, truth, node_truth, loss_weight = self._query(
             sequential_index
         )
+        print('inside of getItem')
+        print(f"Features: {features}, Truth: {truth}, Node Truth: {node_truth}")
         graph = self._create_graph(features, truth, node_truth, loss_weight)
+        print(f"Graph created: {graph}")
         return graph
 
     # Internal method(s)
@@ -715,4 +724,6 @@ class EnsembleDataset(torch.utils.data.ConcatDataset):
         Args:
             datasets: A collection of Datasets
         """
+        print(f"EnsembleDataset __init__ called: {datasets}")
         super().__init__(datasets=datasets)
+

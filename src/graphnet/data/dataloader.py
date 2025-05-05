@@ -49,6 +49,13 @@ class DataLoader(torch.utils.data.DataLoader):
             prefetch_factor=prefetch_factor,
             **kwargs,
         )
+        # Debugging print statements
+        print(f"DataLoader initialized with dataset: {dataset}")
+        print(f"Batch size: {batch_size}")
+        print(f"Shuffle: {shuffle}")
+        print(f"Number of workers: {num_workers}")
+        print(f"Persistent workers: {persistent_workers}")
+        print(f"Prefetch factor: {prefetch_factor}")
 
     @classmethod
     def from_dataset_config(
