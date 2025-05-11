@@ -57,6 +57,12 @@ class KNNGraph(GraphDefinition):
             seed=seed,
             **kwargs,
         )
+        print("graphs.py(60) detector val: ", detector)
+        print("graphs.py(61) node_definition val: ", node_definition)
+        print("graphs.py(62) dtype val: ", dtype)
+        print("graphs.py(63) input_feature_names val: ", input_feature_names)
+        print("graphs.py(64) perturbation_dict val: ", perturbation_dict)
+        print("graphs.py(65) seed val: ", seed)
 
 
 class EdgelessGraph(GraphDefinition):

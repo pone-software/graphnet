@@ -45,6 +45,10 @@ class StandardModel(EasySyntax):
             scheduler_config=scheduler_config,
         )
 
+        print("standard_model.py(48) tasks val: ", tasks)
+        print("standard_model.py(49) backbone val: ", backbone)
+        print("standard_model.py(50) gnn val: ", gnn)
+
         # deprecation warnings
         if (backbone is None) & (gnn is not None):
             backbone = gnn
