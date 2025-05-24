@@ -4,10 +4,9 @@ from graphnet.models.graphs import KNNGraph
 from graphnet.models.graphs.nodes import NodesAsPulses
 from graphnet.models.gnn.dynedge import DynEdge
 from graphnet.models.task.classification import MulticlassClassificationTask
-from graphnet.data.dataloader import DataLoader
+from torch_geometric.loader import DataLoader
 from graphnet.data.dataset.parquet.parquet_dataset import ParquetDataset
 from graphnet.data import GraphNeTDataModule
-from graphnet.data.dataloader import DataLoader
 from torch.utils.data import random_split
 from graphnet.data.dataset.dataset import EnsembleDataset
 
@@ -162,20 +161,21 @@ print(f"Train set length: {len(train_set)}, Validation set length: {len(val_set)
 
 # Debugging DataLoader arguments
 print("Creating DataLoader for train set...")
-train_dataloader = DataLoader(train_set, batch_size=1, num_workers=1)
-print(f"Train DataLoader created with batch_size=1 and num_workers=1. Length: {len(train_dataloader)}")
+train_dataloader = DataLoader(train_set, batch_size=1, num_workers=0)
+print(f"Train DataLoader created with batch_size=1 and num_workers=0. Length: {len(train_dataloader)}")
 
 print("Creating DataLoader for validation set...")
-validate_dataloader = DataLoader(val_set, batch_size=1, num_workers=1)
-print(f"Validation DataLoader created with batch_size=1 and num_workers=1. Length: {len(validate_dataloader)}")
+validate_dataloader = DataLoader(val_set, batch_size=1, num_workers=0)
+print(f"Validation DataLoader created with batch_size=1 and num_workers=0. Length: {len(validate_dataloader)}")
 
 print("Creating DataLoader for test set...")
-test_dataloader = DataLoader(test_set, batch_size=1, num_workers=1)
-print(f"Test DataLoader created with batch_size=1 and num_workers=1. Length: {len(test_dataloader)}")
+test_dataloader = DataLoader(test_set, batch_size=1, num_workers=0)
+print(f"Test DataLoader created with batch_size=1 and num_workers=0. Length: {len(test_dataloader)}")
 
 # Debugging iteration through train_dataloader
 print("Iterating through train_dataloader...")
 for i, batch in enumerate(train_dataloader):
+    print("Value of the train dataloader loop: ", i)
     print(f"Processing batch {i + 1}/{len(train_dataloader)}...")
     print(f"Batch details: {batch}")
     # Add any specific processing logic here
@@ -192,7 +192,7 @@ backbone = DynEdge(
 )
 task = MulticlassClassificationTask(
     hidden_size=backbone.nb_outputs,
-    nb_outputs=backbone.nb_outputs,
+    nb_outputs=2,
     target_labels="signal_background_label",
     loss_function=CrossEntropyLoss(
         options=[2, torch.int64]),
