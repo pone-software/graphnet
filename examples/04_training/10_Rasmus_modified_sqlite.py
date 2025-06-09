@@ -1,3 +1,22 @@
+###################################################################################################################################
+# Notes to run this script with gpus 
+""" 
+Run line in terminal each session before running the training:
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
+Do inside VENV to setup the packages needed:
+pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2
+pip install torch_geometric
+pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.2.2+cu121.html
+"""
+
+# If no gpus needed then you must change these lines
+"""  
+gpus = [3]  # Set to [0] for no gpus
+"fit": {"gpus": gpus}, # change "gpus" to "0" if no gpus needed
+"""
+###################################################################################################################################
+
 from typing import Dict, Callable, Any, List
 
 import os
@@ -185,6 +204,7 @@ def main(args: Dict[str, Any]) -> None:
         gpus=args["fit"]["gpus"],
     )
     outdir = args["outdir"]
+    print("Out Directory: ", outdir)
     # Save predictions and model to file
     os.makedirs(outdir, exist_ok=True)
 
@@ -201,13 +221,13 @@ def main(args: Dict[str, Any]) -> None:
 
 if __name__  == '__main__':
     basedir = "/mnt/research/IceCube/PONE/jp_pone_sim/k40sim/sqlite"
-    gpus = [0]  # Was [3]
+    gpus = [3]  # Set to [0] for no gpus
     lr = 1e-03
     batch_size = 10
     num_workers = 10
     n_noise = 20
     n_signal = 20
-    outdir = '/scratch/users/rorso/msu/victoria/outdir'
+    outdir = '/mnt/gs21/scratch/robsonj3/modified_sqlite'  # must change to current user
     target = 'is_signal'
     features = ["dom_x", "dom_y", "dom_z", "dom_time", "charge"]
     truth = ['event_no']
@@ -226,7 +246,7 @@ if __name__  == '__main__':
            "noise_truth_table": truth_table_noise,
            "signal_truth_table": truth_table_signal,
            "features": features,
-           "fit": {"gpus": 0}, # "0" was "gpus"
+           "fit": {"gpus": gpus}, # change "gpus" to "0" if no gpus needed
            "lr": lr,
            "outdir": outdir,
            "features": features,

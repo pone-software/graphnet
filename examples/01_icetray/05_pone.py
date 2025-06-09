@@ -56,12 +56,12 @@ def main_pone(backend: str, qtop: bool) -> None:
         return
     gcd_rescue = gcd_rescue[0]
     print("gcd type", type(gcd_rescue))
-    pulsemap_name = "K40PulseMap"  #PMTResponse_nonoise, K40PulseMap
+    pulsemap_name = "PMTPulseMap"  #PMTResponse_nonoise, K40PulseMap, PMTPulseMap
     converter = CONVERTER_CLASS[backend](
         extractors=[
             I3FeatureExtractorIceCube86(pulsemap_name),
             I3TruthExtractor(),  # Add own truthextractor
-
+            
         ],
         outdir=outdir,
         gcd_rescue=gcd_rescue,
