@@ -1,6 +1,8 @@
 ###################################################################################################################################
 # Notes to run this script with gpus 
-""" 
+"""
+Make sure to run script on HPCC gpu node(amd20-v100, dev-amd24-h200, or dev-intel16-k80)
+
 Run line in terminal each session before running the training:
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
@@ -231,10 +233,10 @@ if __name__  == '__main__':
     target = 'is_signal'
     features = ["dom_x", "dom_y", "dom_z", "dom_time", "charge"]
     truth = ['event_no']
-    pulsemap_signal = 'PMTResponse_nonoise'
+    pulsemap_signal = 'PMTResponse'
     pulsemap_noise = 'K40PulseMap'
     truth_table_noise = 'K40_truth'
-    truth_table_signal = 'GenerateSingleMuons_39_pmtsim_pframe_truth'
+    truth_table_signal = 'truth'
     data_path_signal = f"{basedir}/signal/merged/merged.db"
     data_path_noise = f"{basedir}/noise/merged/merged.db"
     
