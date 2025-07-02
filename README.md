@@ -1,44 +1,47 @@
-How to convert i3 files to parquet:
-module --force purge
-export PYTHONPATH="/mnt/ufs18/home-040/robsonj3/envs/gnn/lib/python3.11/site-packages:$PYTHONPATH"
-eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.3.0/setup.sh`
-/cvmfs/icecube.opensciencegrid.org/py3-v4.3.0/RHEL_7_x86_64/metaprojects/icetray/v1.9.2/env-shell.sh
-source envs/gnn/bin/activate
-export PYTHONPATH="/mnt/ufs18/home-040/robsonj3/envs/gnn/lib/python3.11/site-packages:$PYTHONPATH"
-# replace username in the line above
-cd graphnet/examples/01_icetray/
-python 05_pone.py --qtop parquet
+# How to convert i3 files to parquet: <br>
+module --force purge <br>
+export PYTHONPATH="/mnt/ufs18/home-040/robsonj3/envs/gnn/lib/python3.11/site-packages:$PYTHONPATH" <br>
+eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.3.0/setup.sh` <br>
+/cvmfs/icecube.opensciencegrid.org/py3-v4.3.0/RHEL_7_x86_64/metaprojects/icetray/v1.9.2/env-shell.sh <br>
+source envs/gnn/bin/activate <br>
+export PYTHONPATH="/mnt/ufs18/home-040/robsonj3/envs/gnn/lib/python3.11/site-packages:$PYTHONPATH" <br>
+cd graphnet/examples/01_icetray/ <br>
+python 05_pone.py --qtop parquet <br>
+replace username in the line above <br>
 
-
-/graphnet/examples/04_training/09_train_k40_no_yml.py:
+# /graphnet/examples/04_training/09_train_k40_no_yml.py: <br>
 My attempt to reverse engineer how to get a GraphNet training to run. This script is now surpassed by the next section.
 
-/graphnet/examples/04_training/10_Rasmus_modified_sqlite.py:
+# /graphnet/examples/04_training/10_Rasmus_modified_sqlite.py: <br>
 Is the most up to date code after Rasmus took a look at the code. If there are issues on getting the code to run on a GPU node I included instructions at the top of the file. If you do not want to use a GPU node for some reason there are instructions for that as well.
 In the future combining pulsemaps for K40 and muons needs to be done.
 The PID value used for training needs to be looked further into.
 
 
-/graphnet/examples/01_icetray/05_pone.py:
+# /graphnet/examples/01_icetray/05_pone.py: <br>
 Use this to convert files from i3 to parquet or sqlite. Run with the --qtop flag first and then run again after with no --qtop flag. Make sure the inputs and outdir are changed to user's preference. 
+<br>
+<br>
 !!!And make sure the outdir and inputs are not to the same location!!!
+<br>
+<br>
 Also make sure to change the pulsemap_name to the pulsemap that you need to use.
 
-Run this to setup Icetray in HPCC after IceTray is installed(change robsonj3):
-module --force purge
-eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.3.0/setup.sh`
-export PATH=$PATH:/cvmfs/icecube.opensciencegrid.org/distrib/OpenCL_Linux/
-export ICETRAYENV=/mnt/home/robsonj3/test_setup/icetray/build/env-shell.sh
-$ICETRAYENV
+# Run this to setup Icetray in HPCC after IceTray is installed(change robsonj3):<br>
+module --force purge <br>
+eval `/cvmfs/icecube.opensciencegrid.org/py3-v4.3.0/setup.sh` <br>
+export PATH=$PATH:/cvmfs/icecube.opensciencegrid.org/distrib/OpenCL_Linux/ <br>
+export ICETRAYENV=/mnt/home/robsonj3/test_setup/icetray/build/env-shell.sh <br>
+$ICETRAYENV <br>
 
-To view parquet files in HPCC: 
+# To view parquet files in HPCC: <br>
 https://pypi.org/project/parquet-tools/
 
-Writing batch jobs on HPCC can be found here:
-https://docs.icer.msu.edu/Job_Script_and_Job_Submission/
-https://docs.icer.msu.edu/Example_SLURM_scripts/
+# Writing batch jobs on HPCC can be found here: <br>
+https://docs.icer.msu.edu/Job_Script_and_Job_Submission/ <br>
+https://docs.icer.msu.edu/Example_SLURM_scripts/ <br>
 
-GraphNet installation instructions can be found here:
+# GraphNet installation instructions can be found here: <br>
 https://graphnet-team.github.io/graphnet/installation/install.html
 
 <center>
